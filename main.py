@@ -7,9 +7,17 @@ screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 def main():
     pg.init() 
     
+    updatable = pg.sprite.Group()
+    drawable = pg.sprite.Group()
+    
+    #Player.containers = (updatable, drawable)
+    
     clock = pg.time.Clock()
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     dt = 0
+    
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    updatable.add(player)
+    drawable.add(player)
 
     while True:
         
@@ -18,9 +26,15 @@ def main():
                 return
         
         screen.fill("black")
-        player.draw(screen)
-        player.update(dt)
+
+        for obj in updatable:
+            obj.update(dt)
+        
+        for obj in drawable:
+            obj.draw(screen)
+        
         pg.display.flip()
+
         dt = clock.tick(60) / 1000
 
 if __name__ == "__main__":
